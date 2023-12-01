@@ -1,23 +1,40 @@
-import logo from './logo.svg';
 import './App.css';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import GoogleSignInButton from './components/GoogleSignInButton';
+import { useContext,  useEffect } from 'react';
+import {Context as AuthContext} from './context/AuthContext';
+import Documents from './components/Documents';
 
 function App() {
+  const {getToken, testEncrypt,state:{googleToken}} = useContext(AuthContext);
+  console.log('LOADING', googleToken);
+
+  useEffect(() => {
+    getToken();
+    //testEncrypt();
+    console.log('Using Effect');
+  },[]);
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+
       </header>
+      <main>
+        {
+          !googleToken
+          ? <GoogleSignInButton />
+          : <div>
+            <p>You are signed in.</p>
+            <Documents />
+          </div>
+          
+          
+        }
+      </main>
+      <footer>
+
+      </footer>
     </div>
   );
 }
